@@ -1,4 +1,3 @@
-import React from 'react';
 import { Download, ArrowDown } from 'lucide-react';
 import { Button } from './ui/button';
 import { portfolioData } from '../mock/portofolioData';
@@ -26,7 +25,7 @@ const Hero = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="text-center max-w-4xl mx-auto">
                     {/* Profile Image */}
-                    <div className="mb-12 animate-fade-in">
+                    <div className="mb-12 mt-10 animate-fade-in">
                         <div className="w-48 h-48 mx-auto relative">
                             <div className="w-full h-full rounded-full border-4 border-[#783162] overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300">
                                 <img

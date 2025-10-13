@@ -9,17 +9,17 @@ export const portfolioData = {
     },
 
     skills: [
-        { name: "React.js", level: 70 },
         { name: "Laravel", level: 89 },
+        { name: "PHP", level: 85 },
+        { name: "Mysql", level: 85 },
+        { name: "Javascript", level: 81 },
+        { name: "Typescript", level: 81 },
+        { name: "Postgresql", level: 80 },
         { name: "Node.js", level: 80 },
         { name: "Next.js", level: 80 },
         { name: "ASP .NET", level: 80 },
         { name: "C#", level: 80 },
-        { name: "PHP", level: 80 },
-        { name: "Javascript", level: 81 },
-        { name: "Typescript", level: 81 },
-        { name: "Mysql", level: 85 },
-        { name: "Postgresql", level: 82 },
+        { name: "React.js", level: 70 }
     ],
 
     education: [
