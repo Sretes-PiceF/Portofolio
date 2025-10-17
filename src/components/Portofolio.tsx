@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ExternalLink, Github, Eye } from 'lucide-react';
+import { Github } from 'lucide-react';
 import { Button } from './ui/button';
 import { portfolioData } from '../mock/portofolioData';
 
@@ -67,16 +67,9 @@ const Portfolio = () => {
                 <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <Button
                         size="sm"
-                        className="bg-white/90 text-[#783162] hover:bg-white hover:text-[#783162] shadow-lg backdrop-blur-sm"
-                        onClick={() => window.open(project.demoLink, '_blank')}
-                    >
-                        <Eye size={16} className="mr-1" />
-                        Live Demo
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="outline"
-                        className="border-white/90 text-white hover:bg-white/10 shadow-lg backdrop-blur-sm"
+                        variant="ghost"
+                        className="bg-transparent text-white border border-white/40 hover:bg-white/10 hover:border-white/70 backdrop-blur-md shadow-md transition-all duration-300
+    "
                         onClick={() => window.open(project.githubLink, '_blank')}
                     >
                         <Github size={16} className="mr-1" />
@@ -116,14 +109,7 @@ const Portfolio = () => {
 
                 {/* Action Links */}
                 <div className="flex gap-3 pt-4 border-t border-[#f5f5f5]">
-                    <Button
-                        variant="ghost"
-                        className="flex-1 text-[#783162] hover:text-[#d4af37] hover:bg-[#783162]/5"
-                        onClick={() => window.open(project.demoLink, '_blank')}
-                    >
-                        <ExternalLink size={16} className="mr-2" />
-                        View Project
-                    </Button>
+
                     <Button
                         variant="ghost"
                         className="flex-1 text-[#2d2d2d] hover:text-[#783162] hover:bg-[#783162]/5"
@@ -163,7 +149,7 @@ const Portfolio = () => {
                             className="text-[#2d2d2d]/70 text-lg mt-6 max-w-2xl mx-auto"
                             style={{ fontFamily: 'Poppins, sans-serif' }}
                         >
-                            Explore my latest projects showcasing innovative solutions and creative implementations
+                            Project yang pernah saya buat selama belajar di SMK Negeri 6 Malang. Sebagai bukti nyata kemampuan saya dalam mengembangkan aplikasi.
                         </p>
                     </div>
 

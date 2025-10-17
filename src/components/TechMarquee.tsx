@@ -1,61 +1,83 @@
+import { ExternalLink } from 'lucide-react';
+
 const TechMarquee = () => {
     const technologies = [
         {
             name: 'React.js',
             icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-            color: '#61DAFB'
+            color: '#61DAFB',
+            link: 'https://react.dev/'
         },
         {
             name: 'Node.js',
             icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-            color: '#339933'
+            color: '#339933',
+            link: 'https://nodejs.org/en/docs'
         },
         {
             name: 'JavaScript',
             icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
-            color: '#F7DF1E'
+            color: '#F7DF1E',
+            link: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'
         },
         {
             name: 'TypeScript',
             icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
-            color: '#3178C6'
+            color: '#3178C6',
+            link: 'https://www.typescriptlang.org/docs/'
         },
         {
             name: 'Next.js',
             icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
-            color: '#000000'
+            color: '#000000',
+            link: 'https://nextjs.org/docs'
         },
         {
             name: 'Laravel',
             icon: 'https://www.vectorlogo.zone/logos/laravel/laravel-icon.svg',
-            color: '#FF2D20'
+            color: '#FF2D20',
+            link: 'https://laravel.com/docs'
         },
         {
             name: 'PHP',
             icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg',
-            color: '#777BB4'
+            color: '#777BB4',
+            link: 'https://www.php.net/docs.php'
         },
         {
             name: 'MySQL',
             icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg',
-            color: '#4479A1'
+            color: '#4479A1',
+            link: 'https://dev.mysql.com/doc/'
         },
         {
             name: 'PostgreSQL',
             icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
-            color: '#4169E1'
+            color: '#4169E1',
+            link: 'https://www.postgresql.org/docs/'
         },
         {
             name: 'Git',
             icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
-            color: '#F05032'
+            color: '#F05032',
+            link: 'https://git-scm.com/doc'
         },
         {
             name: '.NET',
             icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg',
-            color: '#512BD4'
+            color: '#512BD4',
+            link: 'https://learn.microsoft.com/en-us/dotnet/'
         }
     ];
+
+    // Fungsi untuk membuka dokumentasi
+    const openDocumentation = (url: string, event?: React.MouseEvent) => {
+        if (event) {
+            event.stopPropagation();
+        }
+        console.log('Opening documentation:', url);
+        window.open(url, '_blank', 'noopener,noreferrer');
+    };
 
     // Fungsi handler untuk error gambar
     const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -83,32 +105,44 @@ const TechMarquee = () => {
 
                 {/* Marquee Container */}
                 <div className="relative">
+                    {/* Gradient overlays untuk efek fade */}
+                    <div className="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                    <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
                     {/* First Row - Left to Right */}
                     <div className="flex overflow-hidden mb-4">
                         <div className="flex animate-marquee-smooth">
                             {[...technologies, ...technologies, ...technologies].map((tech, index) => (
-                                <div
+                                <button
                                     key={`left-${index}`}
-                                    className="flex items-center gap-3 mx-6 bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-[#f5f5f5] min-w-fit group"
+                                    onClick={(e) => openDocumentation(tech.link, e)}
+                                    className="flex items-center gap-3 mx-6 bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-[#f5f5f5] min-w-fit group cursor-pointer relative focus:outline-none focus:ring-0 focus:shadow-lg"
                                     style={{
                                         borderLeft: `4px solid ${tech.color}`
                                     }}
+                                    title={`Klik untuk membuka dokumentasi ${tech.name}`}
                                 >
-                                    {/* Logo SVG berwarna asli - HAPUS SEMUA FILTER */}
+                                    {/* Logo SVG berwarna asli */}
                                     <img
                                         src={tech.icon}
                                         alt={tech.name}
                                         className="w-8 h-8 object-contain"
                                         onError={handleImageError}
                                     />
-                                    {/* Teks tetap hitam normal */}
+                                    {/* Teks */}
                                     <span
-                                        className="font-semibold text-[#2d2d2d] text-lg whitespace-nowrap"
+                                        className="font-semibold text-[#2d2d2d] text-lg whitespace-nowrap group-hover:text-[#783162] transition-colors duration-300"
                                         style={{ fontFamily: 'Poppins, sans-serif' }}
                                     >
                                         {tech.name}
                                     </span>
-                                </div>
+
+                                    {/* External Link Icon - muncul saat hover */}
+                                    <ExternalLink
+                                        size={14}
+                                        className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[#783162] bg-white rounded-full p-1 shadow-md"
+                                    />
+                                </button>
                             ))}
                         </div>
                     </div>
@@ -117,28 +151,36 @@ const TechMarquee = () => {
                     <div className="flex overflow-hidden">
                         <div className="flex animate-marquee-smooth-reverse">
                             {[...technologies, ...technologies, ...technologies].map((tech, index) => (
-                                <div
+                                <button
                                     key={`right-${index}`}
-                                    className="flex items-center gap-3 mx-6 bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-[#f5f5f5] min-w-fit group"
+                                    onClick={(e) => openDocumentation(tech.link, e)}
+                                    className="flex items-center gap-3 mx-6 bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border border-[#f5f5f5] min-w-fit group cursor-pointer relative focus:outline-none focus:ring-0 focus:shadow-lg"
                                     style={{
                                         borderRight: `4px solid ${tech.color}`
                                     }}
+                                    title={`Klik untuk membuka dokumentasi ${tech.name}`}
                                 >
-                                    {/* Logo SVG berwarna asli - HAPUS SEMUA FILTER */}
+                                    {/* Logo SVG berwarna asli */}
                                     <img
                                         src={tech.icon}
                                         alt={tech.name}
                                         className="w-8 h-8 object-contain"
                                         onError={handleImageError}
                                     />
-                                    {/* Teks tetap hitam normal */}
+                                    {/* Teks */}
                                     <span
-                                        className="font-semibold text-[#2d2d2d] text-lg whitespace-nowrap"
+                                        className="font-semibold text-[#2d2d2d] text-lg whitespace-nowrap group-hover:text-[#783162] transition-colors duration-300"
                                         style={{ fontFamily: 'Poppins, sans-serif' }}
                                     >
                                         {tech.name}
                                     </span>
-                                </div>
+
+                                    {/* External Link Icon - muncul saat hover */}
+                                    <ExternalLink
+                                        size={14}
+                                        className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[#783162] bg-white rounded-full p-1 shadow-md"
+                                    />
+                                </button>
                             ))}
                         </div>
                     </div>
@@ -188,8 +230,8 @@ const TechMarquee = () => {
         }
         
         /* Pause animation on hover */
-        .animate-marquee-smooth:hover,
-        .animate-marquee-smooth-reverse:hover {
+        .flex.animate-marquee-smooth:hover,
+        .flex.animate-marquee-smooth-reverse:hover {
           animation-play-state: paused;
         }
         
@@ -203,6 +245,34 @@ const TechMarquee = () => {
         .flex.animate-marquee-smooth,
         .flex.animate-marquee-smooth-reverse {
           transform-style: preserve-3d;
+        }
+
+        /* HAPUS SEMUA FOCUS STYLES YANG MENIMBULKAN BAYANGAN UNGU */
+        button {
+          outline: none;
+          user-select: none;
+        }
+
+        button:focus {
+          outline: none;
+          ring: none;
+          box-shadow: none;
+        }
+
+        button:focus-visible {
+          outline: none;
+          ring: none;
+          box-shadow: none;
+        }
+
+        /* Active state untuk button - tanpa bayangan ungu */
+        button:active {
+          transform: scale(0.98);
+        }
+
+        /* Hapus semua ring color default browser */
+        button:focus:not(:focus-visible) {
+          outline: none;
         }
       `}</style>
         </div>

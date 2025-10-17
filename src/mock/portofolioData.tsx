@@ -87,21 +87,19 @@ export const portfolioData = {
     projects: [
         {
             id: 1,
-            title: "E-Commerce Platform",
-            description: "Modern e-commerce solution with React and Node.js featuring real-time inventory management",
-            image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=300&fit=crop&auto=format",
-            technologies: ["React", "Node.js", "MongoDB", "Stripe"],
-            demoLink: "https://demo.example.com",
-            githubLink: "https://github.com/example"
+            title: "Perpustakaan Digital",
+            description: "Solusi web dinamis untuk manajemen perpustakaan dengan fitur peminjaman buku, pengembalian, dan katalog online. Dengan Framework Laravel 11 dan Bootstrap 5.",
+            image: "./images/lalravel.png",
+            technologies: ["Fullstack Laravel", "Bootstrap 5", "MySQL"],
+            githubLink: "https://github.com/Sretes-PiceF/project-laravel.git"
         },
         {
             id: 2,
-            title: "Task Management App",
-            description: "Collaborative project management tool with real-time updates and team collaboration features",
-            image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=500&h=300&fit=crop&auto=format",
+            title: "Website Sekolah SMP PGRI 6 Malang",
+            description: "Web sekolah modern dengan Next.js, Tailwind CSS, dan TypeScript. Menyajikan informasi dinamis tentang akademik, kegiatan, dan pengumuman sekolah.",
+            image: "./images/sampul 1.png",
             technologies: ["React", "Firebase", "Material-UI", "WebSocket"],
-            demoLink: "https://demo.example.com",
-            githubLink: "https://github.com/example"
+            githubLink: "https://github.com/Sretes-PiceF/UPK.git"
         }
     ],
 
