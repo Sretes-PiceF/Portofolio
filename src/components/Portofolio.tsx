@@ -173,7 +173,7 @@ const Portfolio = () => {
                             onClick={() => window.open('https://github.com/Sretes-PiceF', '_blank')}
                         >
                             <Github size={20} className="mr-2" />
-                            View All Projects on GitHub
+                            Melihat Semua Project
                         </Button>
                     </div>
                 </div>

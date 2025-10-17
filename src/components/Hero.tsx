@@ -1,14 +1,9 @@
-import { Download, ArrowDown } from 'lucide-react';
-import { Button } from './ui/button';
+import { ArrowDown } from 'lucide-react';
 import { portfolioData } from '../mock/portofolioData';
 
 const Hero = () => {
     const { profile } = portfolioData;
 
-    const handleDownloadCV = () => {
-        // Mock download action
-        alert('CV download akan tersedia setelah integrasi backend');
-    };
 
     const scrollToAbout = () => {
         document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' });
@@ -59,29 +54,6 @@ const Hero = () => {
                             {profile.description}
                         </p>
                     </div>
-
-                    {/* CTA Buttons */}
-                    <div className="mb-12 animate-slide-up delay-300">
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                            <Button
-                                onClick={handleDownloadCV}
-                                className="bg-[#783162] hover:bg-[#783162]/90 text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2"
-                                style={{ fontFamily: 'Poppins, sans-serif' }}
-                            >
-                                <Download size={20} />
-                                Download CV
-                            </Button>
-                            <Button
-                                onClick={scrollToAbout}
-                                variant="outline"
-                                className="border-2 border-[#783162] text-[#783162] hover:bg-[#783162] hover:text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-                                style={{ fontFamily: 'Poppins, sans-serif' }}
-                            >
-                                Lainnya
-                            </Button>
-                        </div>
-                    </div>
-
                     {/* Scroll Indicator */}
                     <div className="animate-bounce">
                         <button

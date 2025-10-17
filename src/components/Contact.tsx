@@ -113,11 +113,11 @@ const Contact = () => {
                             }`}
                     >
                         <h2 className="text-4xl md:text-5xl font-bold text-[#2d2d2d] mb-6">
-                            Let's <span className="text-[#783162]">Connect</span>
+                            Hubungi <span className="text-[#783162]">Saya</span>
                         </h2>
                         <div className="w-24 h-1 bg-gradient-to-r from-[#783162] to-[#d4af37] mx-auto rounded-full"></div>
                         <p className="text-[#2d2d2d]/70 text-lg mt-6 max-w-2xl mx-auto">
-                            Have a project in mind or want to collaborate? I'd love to hear from you!
+                            Jika memiliki pendapat atau saran mengenai portofolio saya, jangan ragu untuk menghubungi saya melalui formulir di bawah ini.
                         </p>
                     </div>
 
@@ -127,7 +127,7 @@ const Contact = () => {
                             className={`transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
                                 }`}
                         >
-                            <h3 className="text-3xl font-bold text-[#2d2d2d] mb-8">Get in Touch</h3>
+                            <h3 className="text-3xl font-bold text-[#2d2d2d] mb-8">Hubungi</h3>
 
                             <div className="space-y-6 mb-10">
                                 <div className="flex items-center gap-4 p-4 bg-white rounded-2xl shadow-lg">
@@ -153,7 +153,7 @@ const Contact = () => {
 
                             {/* Socials */}
                             <div>
-                                <h4 className="text-xl font-bold text-[#2d2d2d] mb-6">Follow Me</h4>
+                                <h4 className="text-xl font-bold text-[#2d2d2d] mb-6">Ikuti Aku</h4>
                                 <div className="flex gap-4">
                                     {Object.entries(socialMedia).map(([platform, url]) => {
                                         const Icon = socialIcons[platform as keyof typeof socialIcons];
@@ -179,13 +179,13 @@ const Contact = () => {
                                 }`}
                         >
                             <div className="bg-white rounded-2xl p-8 shadow-xl">
-                                <h3 className="text-2xl font-bold text-[#2d2d2d] mb-6">Send Message</h3>
+                                <h3 className="text-2xl font-bold text-[#2d2d2d] mb-6">Kirim Pesan</h3>
 
                                 <form ref={form} onSubmit={handleSubmit} className="space-y-6">
                                     <Input
                                         type="text"
                                         name="name"
-                                        placeholder="Your Name"
+                                        placeholder="Nama Anda"
                                         value={formData.name}
                                         onChange={handleInputChange}
                                         required
@@ -193,14 +193,14 @@ const Contact = () => {
                                     <Input
                                         type="email"
                                         name="email"
-                                        placeholder="Your Email"
+                                        placeholder="Email Anda"
                                         value={formData.email}
                                         onChange={handleInputChange}
                                         required
                                     />
                                     <Textarea
                                         name="message"
-                                        placeholder="Your Message"
+                                        placeholder="Pesan Yang Ingin Dikirim"
                                         value={formData.message}
                                         onChange={handleInputChange}
                                         required
@@ -219,7 +219,7 @@ const Contact = () => {
                                         ) : (
                                             <div className="flex items-center gap-2">
                                                 <Send size={20} />
-                                                Send Message
+                                                Kirim
                                             </div>
                                         )}
                                     </Button>

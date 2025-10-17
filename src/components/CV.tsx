@@ -138,7 +138,7 @@ const CV = () => {
                                     className="text-3xl font-bold text-[#2d2d2d]"
                                     style={{ fontFamily: 'Poppins, sans-serif' }}
                                 >
-                                    Education
+                                    Pendidikan
                                 </h3>
                             </div>
 
@@ -166,7 +166,7 @@ const CV = () => {
                                     className="text-3xl font-bold text-[#2d2d2d]"
                                     style={{ fontFamily: 'Poppins, sans-serif' }}
                                 >
-                                    Experience
+                                    Pengalaman
                                 </h3>
                             </div>
 
