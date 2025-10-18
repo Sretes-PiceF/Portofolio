@@ -30,16 +30,18 @@ const Navbar = () => {
     };
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
-            }`}>
+        <nav
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 
+            ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'} pt-safe-top`}
+        >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
+                <div className="flex items-center justify-between h-16 sm:h-20">
                     {/* Logo */}
                     <div className="flex-shrink-0">
                         <a
                             href="#home"
                             onClick={(e) => { e.preventDefault(); scrollToSection('#home'); }}
-                            className="text-xl font-bold text-[#783162] hover:text-[#d4af37] transition-colors"
+                            className="text-lg sm:text-xl font-bold text-[#783162] hover:text-[#d4af37] transition-colors"
                             style={{ fontFamily: 'Poppins, sans-serif' }}
                         >
                             Mohammad Fajar Ihsan Al Maliki
@@ -68,7 +70,8 @@ const Navbar = () => {
                     <div className="md:hidden">
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="text-[#783162] hover:text-[#d4af37] transition-colors"
+                            className="text-[#783162] hover:text-[#d4af37] transition-colors p-2 rounded-md focus:outline-none"
+                            aria-label="Toggle Menu"
                         >
                             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
@@ -94,6 +97,29 @@ const Navbar = () => {
                     </div>
                 )}
             </div>
+
+            {/* Safe area + notch fix */}
+            <style>{`
+                .pt-safe-top {
+                    padding-top: calc(env(safe-area-inset-top, 0px) + 0px);
+                }
+
+                @supports (padding-top: env(safe-area-inset-top)) {
+                    .pt-safe-top {
+                        padding-top: calc(env(safe-area-inset-top) + 8px);
+                    }
+                }
+
+                /* Fix khusus layar kecil seperti 360x760 (Realme/Galaxy) */
+                @media (max-width: 380px) and (max-height: 780px) {
+                    .pt-safe-top {
+                        padding-top: calc(env(safe-area-inset-top, 0px) + 14px) !important;
+                    }
+                    nav .h-16 {
+                        height: 3.75rem !important;
+                    }
+                }
+            `}</style>
         </nav>
     );
 };
