@@ -21,6 +21,7 @@ const Home = () => {
       <Portfolio />
       <Contact />
       <Footer />
+
     </div>
   );
 };

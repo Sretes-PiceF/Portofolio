@@ -1,4 +1,4 @@
-import { Heart, ArrowUp } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import { portfolioData } from '../mock/portofolioData';
 
 const Footer = () => {
@@ -74,7 +74,7 @@ const Footer = () => {
                             className="flex items-center gap-1"
                             style={{ fontFamily: 'Poppins, sans-serif' }}
                         >
-                            Made with <Heart size={16} className="text-red-500" fill="currentColor" /> in Indonesia
+                            Made with in Indonesia
                         </p>
                     </div>
                 </div>

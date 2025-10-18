@@ -98,7 +98,7 @@ export const portfolioData = {
             title: "Website Sekolah SMP PGRI 6 Malang",
             description: "Web sekolah modern dengan Next.js, Tailwind CSS, dan TypeScript. Menyajikan informasi dinamis tentang akademik, kegiatan, dan pengumuman sekolah.",
             image: "./images/sampul 1.png",
-            technologies: ["React", "Firebase", "Material-UI", "WebSocket"],
+            technologies: ["Next.js 15", "Tailwind CSS", "TypeScript", "MySQL"],
             githubLink: "https://github.com/Sretes-PiceF/UPK.git"
         }
     ],

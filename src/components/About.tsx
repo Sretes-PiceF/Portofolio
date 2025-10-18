@@ -6,30 +6,29 @@ import TechMarquee from './TechMarquee';
 const About = () => {
     const { profile, skills } = portfolioData;
 
-    // --- UI state
-    const [isVisible, setIsVisible] = useState(false); // section pop-up (judul, teks, marquee)
+    // UI state
+    const [isVisible, setIsVisible] = useState(false); // section popup
     const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
     const [skillsAnimated, setSkillsAnimated] = useState(false); // bar fill
-    const [canAnimate, setCanAnimate] = useState(true); // true hanya saat user mulai dari top
+    const [canAnimate, setCanAnimate] = useState(true); // true hanya kalau user mulai dari top
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
 
     // refs
     const sectionRef = useRef<HTMLDivElement | null>(null);
     const skillsRef = useRef<HTMLDivElement | null>(null);
-
-    // internal ref: kalau skill area sudah di-view sebelum isVisible=true,
-    // kita simpan antrian agar bar mulai setelah isVisible selesai.
     const pendingSkillsRef = useRef(false);
-    // timer ref supaya bisa dibersihkan saat unmount / reset
     const timerRef = useRef<number | null>(null);
 
-    // -------------------------
-    // Reset animasi ketika user kembali ke paling atas (scrollY <= 20)
-    // sehingga jika user mulai lagi dari top, animasi akan aktif kembali.
-    // -------------------------
+    // detect touch device (untuk fallback hover -> tap)
+    useEffect(() => {
+        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        setIsTouchDevice(hasTouch);
+    }, []);
+
+    // reset animasi saat user kembali ke top
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY <= 20) {
-                // reset agar animasi bisa terjadi lagi jika user mulai scroll dari top
                 setCanAnimate(true);
                 setIsVisible(false);
                 setSkillsAnimated(false);
@@ -45,76 +44,61 @@ const About = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // -------------------------
     // IntersectionObserver untuk section (judul, teks, marquee)
-    // Hanya trigger ketika canAnimate = true (artinya user memulai dari top).
-    // -------------------------
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting && canAnimate) {
-                    // tampilkan pop-up section
                     setIsVisible(true);
                 }
             },
-            { threshold: 0.18, rootMargin: '-60px' }
+            // rootMargin dibuat sedikit positif/negatif agar andal pada perangkat kecil
+            { threshold: 0.14, rootMargin: '-40px 0px -40px 0px' }
         );
 
         if (sectionRef.current) observer.observe(sectionRef.current);
         return () => observer.disconnect();
     }, [canAnimate]);
 
-    // -------------------------
-    // IntersectionObserver untuk skill area.
-    // - Jika skill area ter-observe dan canAnimate === true:
-    //    * jika isVisible sudah true -> start delayed fill bar
-    //    * jika isVisible belum true -> simpan pendingSkillsRef agar ter-trigger setelah isVisible
-    // - Setelah skill fill dimulai -> setCanAnimate(false) supaya tidak re-trigger
-    // -------------------------
+    // IntersectionObserver untuk skill area
     useEffect(() => {
         const skillsObserver = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting && canAnimate) {
-                    // skill area terlihat
                     if (isVisible) {
-                        // kalau section popup sudah tampil, mulai bar dengan delay halus
-                        // delay supaya bar mulai *sesaat setelah* pop-up selesai
                         if (timerRef.current) window.clearTimeout(timerRef.current);
+                        // delay supaya popup section duluan lalu bar
                         timerRef.current = window.setTimeout(() => {
                             setSkillsAnimated(true);
-                            setCanAnimate(false); // jangan ulangi animasi sampai user kembali ke top
+                            setCanAnimate(false);
                             pendingSkillsRef.current = false;
                             timerRef.current = null;
-                        }, 700); // 700ms delay agar pop-up terasa selesai dulu
+                        }, 650);
                     } else {
-                        // jika section belum pop-up, tandai pending
+                        // jika section belum muncul, tandai pending
                         pendingSkillsRef.current = true;
                     }
                 }
             },
-            { threshold: 0.25, rootMargin: '-60px' }
+            { threshold: 0.2, rootMargin: '-30px 0px -30px 0px' }
         );
 
         if (skillsRef.current) skillsObserver.observe(skillsRef.current);
         return () => skillsObserver.disconnect();
     }, [canAnimate, isVisible]);
 
-    // -------------------------
-    // Kalau sebelumnya skill area sempat terlihat (pending) dan sekarang section pop-up muncul,
-    // jalankan animasi bar setelah delay.
-    // -------------------------
+    // jika sebelumnya skill area terlihat (pending) dan sekarang section pop-up => jalankan bar
     useEffect(() => {
         if (isVisible && pendingSkillsRef.current && canAnimate) {
-            // kalau ada pending (skill area sudah di-view) mulai delayed fill now
             if (timerRef.current) window.clearTimeout(timerRef.current);
             timerRef.current = window.setTimeout(() => {
                 setSkillsAnimated(true);
                 setCanAnimate(false);
                 pendingSkillsRef.current = false;
                 timerRef.current = null;
-            }, 700);
+            }, 650);
         }
-        // clear timer saat unmount / state change
+
         return () => {
             if (timerRef.current) {
                 window.clearTimeout(timerRef.current);
@@ -123,7 +107,33 @@ const About = () => {
         };
     }, [isVisible, canAnimate]);
 
-    // --- services static (hanya 3 service)
+    // Close popup when tapping/clicking outside (berguna di mobile untuk menutup skill popup)
+    useEffect(() => {
+        const handleDocClick = (e: MouseEvent | TouchEvent) => {
+            const el = e.target as Node | null;
+            if (!el) return;
+            // kalau klik/tap bukan di dalam skill popup atau skill item, tutup popup
+            const popup = document.querySelector('.skill-popup');
+            const skillItems = document.querySelectorAll('.skill-item');
+            const clickedInsidePopup = popup && popup.contains(el);
+            let clickedSkillItem = false;
+            skillItems.forEach((it) => {
+                if (it.contains(el)) clickedSkillItem = true;
+            });
+            if (!clickedInsidePopup && !clickedSkillItem) {
+                setHoveredSkill(null);
+            }
+        };
+
+        document.addEventListener('click', handleDocClick);
+        document.addEventListener('touchstart', handleDocClick);
+        return () => {
+            document.removeEventListener('click', handleDocClick);
+            document.removeEventListener('touchstart', handleDocClick);
+        };
+    }, []);
+
+    // services
     const services = [
         {
             icon: <Code size={32} />,
@@ -167,7 +177,7 @@ const About = () => {
                     </div>
 
                     {/* Tech Marquee */}
-                    <div className={`transition-all duration-700 delay-150 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} >
+                    <div className={`transition-all duration-700 delay-150 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                         <TechMarquee />
                     </div>
 
@@ -207,19 +217,36 @@ const About = () => {
 
                             <div className="space-y-6">
                                 {skills.map((skill, idx) => {
-                                    // optional: stagger per-skill delay for a nicer cascade effect
-                                    const perSkillDelay = 150 * idx; // ms
+                                    const perSkillDelay = 150 * idx;
                                     return (
                                         <div
                                             key={skill.name}
-                                            className="group relative"
-                                            onMouseEnter={() => setHoveredSkill(skill.name)}
-                                            onMouseLeave={() => setHoveredSkill(null)}
+                                            className="group relative skill-item"
+                                            // desktop: hover, mobile: tap
+                                            onMouseEnter={() => !isTouchDevice && setHoveredSkill(skill.name)}
+                                            onMouseLeave={() => !isTouchDevice && setHoveredSkill(null)}
+                                            onClick={() => {
+                                                if (isTouchDevice) {
+                                                    // toggle popup on touch devices
+                                                    setHoveredSkill((prev) => (prev === skill.name ? null : skill.name));
+                                                }
+                                            }}
                                         >
                                             <div className="flex justify-between items-center mb-2">
-                                                <span className="font-medium text-[#2d2d2d] cursor-pointer hover:text-[#783162] transition-colors" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                                                <button
+                                                    // use button for accessibility on mobile (tap target)
+                                                    className="font-medium text-[#2d2d2d] hover:text-[#783162] transition-colors"
+                                                    style={{ fontFamily: 'Poppins, sans-serif' }}
+                                                    onClick={(e) => {
+                                                        // prevent outer click handler duplication
+                                                        e.stopPropagation();
+                                                        if (isTouchDevice) {
+                                                            setHoveredSkill((prev) => (prev === skill.name ? null : skill.name));
+                                                        }
+                                                    }}
+                                                >
                                                     {skill.name}
-                                                </span>
+                                                </button>
                                                 <span className="text-[#783162] font-bold" style={{ fontFamily: 'Poppins, sans-serif' }}>
                                                     {skill.level}%
                                                 </span>
@@ -227,7 +254,6 @@ const About = () => {
 
                                             <div className="w-full bg-[#f5f5f5] rounded-full h-3 overflow-hidden relative">
                                                 <div
-                                                    // inline style untuk transisi width yang sangat smooth; gunakan cubic-bezier untuk feel natural
                                                     className="h-full rounded-full"
                                                     style={{
                                                         width: skillsAnimated ? `${skill.level}%` : '0%',
@@ -237,9 +263,12 @@ const About = () => {
                                                 />
                                             </div>
 
-                                            {/* Skill Popup */}
+                                            {/* Skill Popup (use class skill-popup for outside click detection) */}
                                             {hoveredSkill === skill.name && (
-                                                <div className="absolute left-0 -top-16 z-50 bg-white rounded-lg shadow-xl p-4 border border-[#783162]/20 min-w-[200px] animate-fadeIn">
+                                                <div
+                                                    className="skill-popup absolute left-0 -top-36 z-50 bg-white rounded-lg shadow-xl p-4 border border-[#783162]/20 min-w-[200px]"
+                                                    style={{ animation: 'fadeIn 0.22s ease-out forwards' }}
+                                                >
                                                     <div className="flex items-center gap-3 mb-2">
                                                         <h4 className="font-bold text-[#783162]" style={{ fontFamily: 'Poppins, sans-serif' }}>
                                                             {skill.name}
@@ -254,7 +283,7 @@ const About = () => {
                                                     <div className="flex items-center gap-2">
                                                         <Award size={16} className="text-[#783162]" />
                                                         <span className="text-xs text-[#2d2d2d]/70" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                                                            {skill.level >= 90 ? 'Expert Level' : skill.level >= 80 ? 'Beginner' : 'Intermediate'}
+                                                            {skill.level >= 90 ? 'Expert Level' : skill.level >= 80 ? 'Advanced' : 'Intermediate'}
                                                         </span>
                                                     </div>
                                                     <div className="absolute top-full left-6 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-white" />
@@ -267,7 +296,7 @@ const About = () => {
                         </div>
                     </div>
 
-                    {/* Services - Ditempatkan di tengah dengan 3 kolom */}
+                    {/* Services */}
                     <div className={`transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                         <h3 className="text-3xl font-bold text-center text-[#2d2d2d] mb-12" style={{ fontFamily: 'Poppins, sans-serif' }}>
                             Kemampuan <span className="text-[#783162]">Saya</span>
@@ -296,14 +325,11 @@ const About = () => {
                 </div>
             </div>
 
-            {/* CSS kecil untuk popup fadeIn */}
+            {/* CSS kecil */}
             <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(-8px) scale(0.98); }
           to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.22s ease-out forwards;
         }
       `}</style>
         </section>
